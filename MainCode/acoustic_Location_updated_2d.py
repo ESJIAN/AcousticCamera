@@ -1,3 +1,5 @@
+### 平面麦克风矩阵波束成形阵列 ###
+
 import tkinter as tk
 from tkinter import ttk                                             # 导入tkinter的GUI组件库用于图形化展示
 import pyaudio                                                      # 导入pyaudio库用于音频输入输出的计算
@@ -15,6 +17,7 @@ import time                                                         # 导入时�
 
 
 ### 麦克风阵列参数初始化 ###
+
 
 
 # 麦克风坐标设定(坐标单位：米)
@@ -40,10 +43,15 @@ DEVICE_INDEX =1             # 设备编号
 
 
 
-# 初始化PyAudio对象，打开音频流
+### PyAudio对象初始化 ###
+
+
+# 初始化pyaudio对象
+# 作用：创建PyAudio对象，把对象属性赋值给对象p，这样就可以通过p来访问和操作这个对象的方法和属性了
+
 p = pyaudio.PyAudio()
-stream = None
-is_recording = False
+stream = None           # 音频流对象
+is_recording = False    # 是否录音
 
 
 
@@ -53,18 +61,18 @@ is_recording = False
 
 
 # 实现延迟求和波束成形算法
-def calculate_delay_and_sum(data):
-    theta_range = np.linspace(-50, 50, 101) * np.pi / 180
-    phi_range = np.linspace(-50, 50, 101) * np.pi / 180
+def calculate_delay_and_sum(data): 
+    theta_range = np.linspace(-50, 50, 101) * np.pi / 180          # 角度范围
+    phi_range = np.linspace(-50, 50, 101) * np.pi / 180            # 
     intensity_map = np.zeros((len(theta_range), len(phi_range)))
-    threshold = 1000  # 波形电压值门槛
+    threshold = 1000                                               # 波形电压值门槛
     
 
 
 
 
-    for i, theta in enumerate(theta_range):
-        for j, phi in enumerate(phi_range):
+    for i, theta in enumerate(theta_range):                        # 遍历角度范围 
+        for j, phi in enumerate(phi_range):                        
             delays = np.array([np.sin(theta), np.cos(theta) * np.sin(phi)])
             delays = np.dot(mic_positions, delays) / 343  # 343m/s为声音速度
             shifted_signals = [np.roll(data[:, k], int(delay * RATE)) for k, delay in enumerate(delays)]
@@ -120,11 +128,34 @@ def update_plot():
 
     root.after(100, update_plot)
 
-root = tk.Tk()
-root.title("Acoustic Localization")
 
-frame = ttk.Frame(root, padding="10")
-frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+
+### GUI界面初始化 ###
+
+root = tk.Tk()                                               # 创建一个窗口对象
+root.title("Acoustic Localization")                          # 设置窗口标题
+
+
+
+
+frame = ttk.Frame(root, padding="10")                        # 创建一个框架对象(传参解读）
+                                                             # root： 是主窗口对象，ttk.Frame 将作为 root 的一个子组件
+                                                             # padding：设置框架内边距
+                                                             
+frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S)) # 配置框架对象
+                                                             
+                                                             # row=0：   指定框架所在的行号为 0。
+                                                             # column=0：指定框架所在的列号为 0。
+                                                             # sticky=(tk.W, tk.E, tk.N, tk.S)：
+
+                                                             # sticky 参数指定了框架如何扩展以填充其所在网格单元格
+                                                             # tk.W (West)：向左扩展
+                                                             # tk.E (East)：向右扩展
+                                                             # tk.N (North)：向上扩展
+                                                             # tk.S (South)：向下扩展
+                                                             # 综合起来，sticky=(tk.W, tk.E, tk.N, tk.S) 表示框架将在其所在的网格单元格内尽可能地扩展，填满整个单元格
+
 
 # 将按钮放置在最上方
 start_button = ttk.Button(frame, text="Start Recording", command=start_recording)
