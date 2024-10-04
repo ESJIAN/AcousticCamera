@@ -4,9 +4,6 @@ sys.path.append("D:\\Users\\JDG223\\Documents\\VSCODE\\Python\\AcousticCamera") 
 
 
 
-
-
-
 import tkinter as tk
 from tkinter import ttk                                             # 导入tkinter的GUI组件库用于图形化展示
 import pyaudio                                                      # 导入pyaudio库用于音频输入输出的计算
@@ -15,6 +12,7 @@ import matplotlib.pyplot as plt                                     #
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg     # 导入matplotlib嵌入到tkinter的GUI中
 from scipy.fftpack import fft                                       # 导入scipy的fft库用于傅里叶变换计算
 import time                                                         # 导入时间模块进行时间度统一
+
 
 
 
@@ -48,13 +46,13 @@ mic_positions = np.array([
 ])
 
 
+
 # 麦克风录音参数设定
 FORMAT = pyaudio.paInt16    # 设置采样精度为16bit
 CHANNELS =8                 # 设置采样通道为8通 
 RATE = 44100                # 设置采样率为44.1khz
 CHUNK = int(RATE * 0.2)     # 0.2秒
 DEVICE_INDEX =1             # 设备编号
-
 
 
 
