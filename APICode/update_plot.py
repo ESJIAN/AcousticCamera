@@ -4,7 +4,7 @@ def update_plot():
         frames = np.frombuffer(data, dtype=np.int16).reshape(-1, CHANNELS)
 
         # 添加波形电压值门槛
-        if np.max(np.abs(frames)) > 4000:
+        if np.max(np.abs(frames)) > 1000:
             intensity_map, theta_range, phi_range = calculate_delay_and_sum(frames)
 
             ax1.clear()

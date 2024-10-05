@@ -34,6 +34,8 @@ from APICode.update_plot import *
 
 
 # 麦克风坐标设定(坐标单位：米)
+# 作用：用于计算距离，用于计算时间，用于计算时域谱，用于计算相位谱  
+# 默认坐标为0，0
 mic_positions = np.array([
     [0,0],              # 麦克风1坐标
     [0,0.6],            # 麦克风2坐标
@@ -48,10 +50,12 @@ mic_positions = np.array([
 
 
 # 麦克风录音参数设定
+# 作用：用于录音参数设定
+# 默认参数为：16bit，8通道，44.1kHz，0.2秒
 FORMAT = pyaudio.paInt16    # 设置采样精度为16bit
 CHANNELS =8                 # 设置采样通道为8通 
 RATE = 44100                # 设置采样率为44.1khz
-CHUNK = int(RATE * 0.2)     # 0.2秒
+CHUNK = int(RATE * 2 * 0.0000000000001)     # 0.02秒*
 DEVICE_INDEX =1             # 设备编号
 
 
